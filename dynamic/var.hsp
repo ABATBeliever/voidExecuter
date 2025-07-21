@@ -1,0 +1,12 @@
+dim IsDPI,6
+dim Press0,16
+dim Press1,16
+dim Press2,16
+dim count
+dim a
+InfoType =""
+InfoLabel=""
+Info1    =""
+Info2    =""
+//sdim JsonPtr,512
+//sdim JsonVersion,8

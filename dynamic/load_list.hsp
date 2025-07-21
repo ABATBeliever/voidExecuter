@@ -1,0 +1,75 @@
+#module
+	#deffunc ListJsonBreak str p3
+		p1=""+AppName@+" - 警告"
+		p2="ランチャーリストが破損しています。"
+		p4="'初期化'を選択した場合、既定が復元されますが、設定は消えます。\n'無視'を選択した場合、エラーを無視し続行します。\n'終了'を選択するかこのポップアップを閉じた場合、"+AppName@+"は終了します。"
+		p5="初期化\n無視\n終了"
+		p6=2
+		p7=1
+		DialogVistaEx p1,p2,p3,p4,p5,p6,p7
+		switch stat
+			case 101 : bcopy "include/default.json","list.json" : dialog "既定値を復元しました。再起動してください。",0,AppName@+" - 情報" : end
+			case 102 : swbreak
+			default  : end
+		swend
+	return
+#global
+
+if IsNotExist("list.json") {
+	dialog "ランチャーリストファイルのロードができません。初期設定が使用されます",0,AppName+" - 通知"
+	bcopy "include/default.json","list.json"
+}
+
+notesel JsonData
+noteload "list.json"
+jsonopen JsonPtr,JsonData
+
+jsongeti JsonVersion,"version",JsonPtr
+if stat!=0        {ListJsonBreak "Jsonのバージョンを把握できません。"}
+if JsonVersion!=1 {ListJsonBreak "Jsonのバージョンが不正です。\nJsonに記載されたバージョン: "+JsonVersion+"\nシステムが要求するバージョン: 1\nJsonファイルのversionを修正することで治る可能性があります。"}
+
+jsongetobj InfoPtr,"entries",JsonPtr
+if stat!=0        {ListJsonBreak "Jsonのランチャーエントリが破損しています。\nこれは致命的です。続行できません。":end}
+
+jsonnext InfoPtr,InfoPtr,2
+while(InfoPtr!=NULL)
+	jsongets InfoType(count)      ,"type",    InfoPtr
+	jsongets InfoLabel(count)     ,"label",   InfoPtr
+	switch InfoType(count)
+		case "url"
+			jsongets Info1(count) ,"url",     InfoPtr
+			jsongets info2(count) ,"browser", InfoPtr
+			swbreak
+		case "app"
+			jsongets Info1(count) ,"path",    InfoPtr
+			jsongets Info2(count) ,"args",    InfoPtr
+			swbreak
+		case "file"
+			jsongets Info1(count) ,"path",    InfoPtr
+			jsongets Info2(count) ,"cliant",  InfoPtr
+			swbreak
+		case "script"
+			jsongets Info1(count),"path",     InfoPtr
+			jsongets Info2(count),"console",  InfoPtr
+			swbreak
+		default
+			InfoType(count) ="Invalid"
+			InfoLabel(count)="破損"
+			Info1(count)    ="Invalid"
+			Info2(count)    ="Invalid"
+			swbreak
+	swend
+	dialog "タイプ:"+InfoType(count)+"\n表示名:"+InfoLabel(count)+"\nデータ1:"+Info1(count)+"\nデータ2:"+Info2(count)
+	jsonnext InfoPtr,InfoPtr,0
+	count++
+wend
+
+repeat count
+	if InfoType(cnt)="Invalid" or InfoType(cnt)="" : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:typeデータの破損"
+	if Infolabel(cnt)=""  : Infolabel(cnt)="破損"  : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:laberの破損"
+	if Info1(cnt)=""                               : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:第3データの破損"
+	//Info2は空白を許す
+loop
+count--
+
+dialog "ロード終了。"

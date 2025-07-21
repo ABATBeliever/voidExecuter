@@ -1,0 +1,79 @@
+//
+// Void Executer   v0.3.0
+//
+// This Software is under MPL
+// 
+//==============================================================================
+/*
+	ビルド用の設定・定数
+*/
+#packopt hide 1
+#packopt icon    "app.ico"
+#packopt version "build.ini"
+
+#define AppName "Void Executer"
+#define AppVer  "v0.3.0"
+#define Verint  "030"
+
+//==============================================================================
+/*
+	includeするファイル一覧
+*/
+
+#epackdir       "include/default.dat"
+#epackdir       "include/default.json"
+#epackdir       "include/hspinet.dll.pack"
+
+//==============================================================================
+/*
+	依存モジュール
+*/
+
+#include "modules/module_ini.hsp"
+#include "modules/module_dpi.hsp"
+#include "modules/module_toast.hsp"
+#include "modules/module_isexist.hsp"
+
+#include "modules/modTaskDialog.as"
+
+//==============================================================================
+/*
+	読み込み
+*/
+if IsNotExist("hspinet.dll") : bcopy "include/hspinet.dll.pack","hspinet.dll"
+#include "hspinet.as"
+
+title ""+AppName+" - 起動中"
+
+#include "dynamic/var.hsp"			//変数確保
+#include "dynamic/load_config.hsp"	//設定ファイルのロード
+#include "dynamic/update.hsp"		//アップデート確認
+#include "dynamic/load_list.hsp"	//ランチャーファイルのロード
+
+//==============================================================================
+/*
+	ウィンドウ準備・通知
+*/
+	
+bgscr 0,640,480,2,(ginfo(20)-640)/2,(ginfo(21)-480)/2
+color int(colors(0)),int(colors(1)),int(colors(2)):boxf:color 0,0,0
+title ""+AppName+" - 待機中"
+if getSini("notify")="Enable" {
+	SetTrayIconFile "user32.dll"
+	CreateTrayIcon "",2,0
+	PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は準備が完了しました。",2,0
+}
+color 0,0,0
+goto *MainLoop
+
+//==============================================================================
+/*
+	入力待ち
+*/
+*MainLoop
+getkey Press0,17
+getkey Press1,18
+getkey Press2,32
+if (Press0) and (Press1) and (Press2) : gsel 0,2: stop
+await 1
+goto *MainLoop

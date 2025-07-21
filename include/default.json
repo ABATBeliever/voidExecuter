@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "type": "url",
+      "label": "OpenAI ChatGPT",
+      "url": "https://chat.openai.com/",
+      "browser": "edge"
+    },
+    {
+      "type": "app",
+      "label": "Notepad",
+      "path": "C:/Windows/notepad.exe",
+      "args": ""
+    },
+    {
+      "type": "file",
+      "label": "ファイル実行のサンプル",
+      "path": "sample.png",
+      "cliant":  ""
+    },
+    {
+      "type": "script",
+      "label": "お試しスクリプト",
+      "path": "sample.bat",
+      "console": "cmd"
+    }
+  ]
+}

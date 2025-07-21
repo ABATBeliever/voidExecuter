@@ -1,0 +1,33 @@
+if IsNotExist("config.dat") {
+	dialog "設定ファイルのロードができません。初期設定が使用されます",0,AppName+" - 通知"
+	bcopy "include/default.dat","config.dat"
+}
+
+Loadini "config.dat"
+
+if getSini("DPI")="New"    {
+	DPI_AwarenessContext
+	IsDPI=stat
+	if IsDPI!=0 : dialog "DPIモードは「New」が選択されましたが、何らかの理由で関数「SetProcessDpiAwarenessContext」を実行できません。",1,AppName+" - 警告"
+}
+if getSini("DPI")="Legacy" {
+	DPI_Aware
+	IsDPI=stat
+	if IsDPI!=0 : dialog "DPIモードは「Legacy」が選択されましたが、何らかの理由で関数「SetProcessDpiAware」を実行できません。",1,AppName+" - 警告"
+}
+if getSini("DPI")="Auto"   {
+	DPI
+	IsDPI=stat
+	switch IsDPI
+		case 300 : swbreak //Awareness
+		case 200 : swbreak //Aware
+		default  : dialog "DPIモードは「Auto」が選択されましたが、何らかの理由ですべてのDPIモードが実行できません。",1,AppName+" - 警告" : swbreak
+	swend
+}
+
+tmp=getSini("color")
+split tmp,",",colors
+if length(colors)!=3 {
+	dialog "色設定が不正です。デフォルトが使用されます。",1,AppName+" - 警告"
+	colors(0)=192:colors(1)=192:colors(2)=192
+}

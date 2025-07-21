@@ -1,0 +1,5 @@
+; This is the setting file of "Void Executer"
+DPI=Auto
+color=192,192,192
+notify=Enable
+autoupdate=Enable

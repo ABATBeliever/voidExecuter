@@ -1,0 +1,43 @@
+if getSini("autoupdate")="Enable" {
+	netinit
+	if stat {
+		dialog "更新確認に失敗しました。\n接続を確立できません。\n※自動更新確認はconfig.datにて無効化できます。",0,AppName+" - 情報"
+	}else{
+		neturl "https://abatbeliever.net/app/voidExecuter/"
+		netrequest_get "update"
+		repeat 64
+			if cnt=63 {
+				dialog "更新確認に失敗しました。\n接続がタイムアウトしました。\n※自動更新確認はconfig.datにて無効化できます。",0,AppName+" - 情報"
+				break
+			}
+			if cnt\5=0{await 1}
+			netexec a
+			if a>0     {
+				netgetv buf
+				if int(buf)=Verint : break     //バージョンが同じ場合
+				if int(buf)>Verint {
+					p1=""+AppName@+" - 更新"
+					p2="新しいバージョン(ID:"+buf+")がリリースされています。"
+					p3="現在: "+Verint+""
+					p4="'更新'を選択した場合、公式サイトを開き、ソフトを終了します。\n'無視'を選択した場合、続行します。\n※自動更新確認はconfig.datで無効化できます。"
+					p5="更新\n無視"
+					p6=3
+					p7=1
+					DialogVistaEx p1,p2,p3,p4,p5,p6,p7
+					switch stat
+						case 101 : dialog "未実装" : end
+						case 102 : swbreak
+						default  : swbreak
+					swend
+					break
+				}
+				if int(buf)<Verint : dialog "このバージョンは開発中です。" : break
+			}
+			if a<0     {
+				neterror buf
+				dialog "更新確認に失敗しました。\nエラーです。\n※自動更新確認はconfig.datにて無効化できます。\n\n"+buf,0,AppName+" - 情報"
+				break
+			}
+		loop
+	}
+}

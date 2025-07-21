@@ -1,0 +1,35 @@
+#module
+	#deffunc Loadini str p1
+		#uselib "kernel32.dll"
+		#func FatalAppExit "FatalAppExitA" int,str
+		tmp@=""
+		LoadiniNameList=""
+		LoadiniPassageList=""
+		exist dir_cur+"\\"+p1										//存在確認
+		if strsize=-1{tmp@="Fail":return}
+	
+		notesel Loadini_buffer										//ロード
+		noteload dir_cur+"\\"+p1
+
+		LoadiniMax=notemax
+		repeat LoadiniMax											//分析
+			sdim tmp												//tmp解放
+			noteget tmp,cnt
+			split tmp,"=",tmp
+			if length(tmp)<2{continue}
+			strrep tmp(1),"*","="
+			LoadiniNameList(cnt)=tmp(0):LoadiniPassageList(cnt)=tmp(1)
+		loop
+
+		noteunsel													//note解放
+	return
+
+	#defcfunc getSini str p1
+		tmp="invalid"
+		repeat LoadiniMax
+			if LoadiniNameList(cnt)=p1{tmp=LoadiniPassageList(cnt):break}
+			if cnt=LoadiniMax-1{tmp="notfound":break}
+		loop
+	return tmp
+
+#global

@@ -1,0 +1,40 @@
+#module
+	#deffunc Module_DPI_init
+		#uselib "user32.dll"
+		#func SetProcessDPIAware "SetProcessDPIAware"
+		#func SetProcessDpiAwarenessContext "SetProcessDpiAwarenessContext" int
+	return
+	#deffunc DPI
+		DPI_AwarenessContext
+		if (stat) {
+			DPI_Aware
+			if (stat) : return 100	//é∏îs
+		}else{
+			return 300				//Awareness
+		}
+	return 200						//Aware
+
+	#deffunc DPI_AwarenessContext //ç≈êV 10Å`
+		if varptr(SetProcessDpiAwarenessContext) {
+			SetProcessDpiAwarenessContext -4
+		}else{
+			return -1
+		}
+		if stat=1 {
+			return 0
+		}
+	return -1
+	
+	#deffunc DPI_Aware			//ÇøÇÂÇ¡Ç∆å√Ç¢
+		if varptr(SetProcessDPIAware) {
+			SetProcessDPIAware
+		}else{
+			return -1
+		}
+		if stat=1 {
+			return 0
+		}
+	return -1
+#global
+
+Module_DPI_init

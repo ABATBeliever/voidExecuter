@@ -1,0 +1,12 @@
+#module
+	#defcfunc IsExist str p1
+		if p1="" : return -1
+		exist dir_cur+"\\"+p1
+		if strsize=-1{return 0}
+	return 1
+	#defcfunc IsNotExist str p1
+		if p1="" : return -1
+		exist dir_cur+"\\"+p1
+		if strsize=-1{return 1}
+	return 0
+#global
