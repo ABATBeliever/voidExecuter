@@ -1,0 +1,6 @@
+tmp="-"
+pos 14        , 20:objsize 38,440:button gosub "Å©",*ClickEventGoPrv :
+pos (640-58)  , 20:objsize 38,440:button gosub "Å®",*ClickEventGoAdv :
+pos (640/2-20),450:objsize 40, 20:input tmp                          :objenable 2,0
+pos (640/2-40),450:objsize 20, 20:button gosub  "c",*ClickEventConfig
+pos (640/2+20),450:objsize 20, 20:button        "x",*ClickEventClose

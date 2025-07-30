@@ -4,6 +4,9 @@ dim Press1,16
 dim Press2,16
 dim count
 dim a
+dim NowPageCnt
+NowPageCnt=0
+sdim tmp
 InfoType =""
 InfoLabel=""
 Info1    =""

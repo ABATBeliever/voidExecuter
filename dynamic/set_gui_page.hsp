@@ -1,0 +1,3 @@
+gsel 0
+objprm 2,""+str((NowPageCnt+1))+"/n"
+if NowPageCnt!=0{objenable 0,1}else{objenable 0,0}

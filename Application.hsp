@@ -1,5 +1,5 @@
 //
-// Void Executer   v0.3.0
+// Void Executer   v0.4.0
 //
 // This Software is under MPL
 // 
@@ -12,8 +12,8 @@
 #packopt version "build.ini"
 
 #define AppName "Void Executer"
-#define AppVer  "v0.3.0"
-#define Verint  "030"
+#define AppVer  "v0.4.0"
+#define Verint  "040"
 
 //==============================================================================
 /*
@@ -40,7 +40,7 @@
 /*
 	読み込み
 */
-if IsNotExist("hspinet.dll") : bcopy "include/hspinet.dll.pack","hspinet.dll"
+#include "dynamic/hspinet.hsp"		//hspinetの準備
 #include "hspinet.as"
 
 title ""+AppName+" - 起動中"
@@ -64,6 +64,10 @@ if getSini("notify")="Enable" {
 	PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は準備が完了しました。",2,0
 }
 color 0,0,0
+
+#include "dynamic/set_gui.hsp"		//GUI設定
+#include "dynamic/set_gui_page.hsp"	//ページ表示
+
 goto *MainLoop
 
 //==============================================================================
@@ -74,6 +78,24 @@ goto *MainLoop
 getkey Press0,17
 getkey Press1,18
 getkey Press2,32
-if (Press0) and (Press1) and (Press2) : gsel 0,2: stop
+if (Press0) and (Press1) and (Press2) : title AppName : gsel 0,2 : stop
 await 1
+goto *MainLoop
+
+*ClickEventGoAdv
+	NowPageCnt++
+	#include "dynamic/set_gui_page.hsp"//ページ表示
+return
+
+*ClickEventGoPrv
+	if NowPageCnt>0{NowPageCnt--}
+	#include "dynamic/set_gui_page.hsp"//ページ表示
+return
+
+*ClickEventConfig
+	dialog "申し訳ありません。設定はまだ実装されていません。"
+return
+
+*ClickEventClose
+gsel 0,-1
 goto *MainLoop

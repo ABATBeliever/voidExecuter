@@ -59,7 +59,7 @@ while(InfoPtr!=NULL)
 			Info2(count)    ="Invalid"
 			swbreak
 	swend
-	dialog "タイプ:"+InfoType(count)+"\n表示名:"+InfoLabel(count)+"\nデータ1:"+Info1(count)+"\nデータ2:"+Info2(count)
+//	dialog "タイプ:"+InfoType(count)+"\n表示名:"+InfoLabel(count)+"\nデータ1:"+Info1(count)+"\nデータ2:"+Info2(count)
 	jsonnext InfoPtr,InfoPtr,0
 	count++
 wend
@@ -71,5 +71,3 @@ repeat count
 	//Info2は空白を許す
 loop
 count--
-
-dialog "ロード終了。"

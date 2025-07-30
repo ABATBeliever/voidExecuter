@@ -1,0 +1,4 @@
+if IsNotExist("hspinet.dll") {
+	bcopy "include/hspinet.dll.pack","hspinet.dll"
+	dialog "jsonファイルのロード・更新確認のためのモジュールが見つかりません。\n生成します。",0,AppName+" - 通知"
+}
