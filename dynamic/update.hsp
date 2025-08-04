@@ -31,7 +31,7 @@ if getSini("autoupdate")="Enable" {
 					swend
 					break
 				}
-				if int(buf)<Verint : dialog "このバージョンは開発中です。" : break
+				if int(buf)<Verint : break//dialog "このバージョンは開発中です。" : break
 			}
 			if a<0     {
 				neterror buf

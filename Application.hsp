@@ -1,5 +1,5 @@
 //
-// Void Executer   v0.4.0
+// Void Executer   v0.6.0
 //
 // This Software is under MPL
 // 
@@ -12,8 +12,8 @@
 #packopt version "build.ini"
 
 #define AppName "Void Executer"
-#define AppVer  "v0.4.0"
-#define Verint  "040"
+#define AppVer  "v0.6.0"
+#define Verint  "060"
 
 //==============================================================================
 /*
@@ -24,10 +24,20 @@
 #epackdir       "include/default.json"
 #epackdir       "include/hspinet.dll.pack"
 
+#epackdir       "include/Exit.png"
+#epackdir       "include/Config.png"
+#epackdir       "include/Button_Prv_Positive.png"
+#epackdir       "include/Button_Prv_Negative.png"
+#epackdir       "include/Button_Adv_Positive.png"
+#epackdir       "include/Button_Adv_Negative.png"
+
 //==============================================================================
 /*
 	依存モジュール
 */
+
+#include "obj.as"
+#include "user32.as"
 
 #include "modules/module_ini.hsp"
 #include "modules/module_dpi.hsp"
@@ -57,18 +67,26 @@ title ""+AppName+" - 起動中"
 	
 bgscr 0,640,480,2,(ginfo(20)-640)/2,(ginfo(21)-480)/2
 color int(colors(0)),int(colors(1)),int(colors(2)):boxf:color 0,0,0
+font "ＭＳ Ｐゴシック",26:objmode 2,1
 title ""+AppName+" - 待機中"
+color 0,0,0
+
+#include "dynamic/set_gui_buffer.hsp"	//画像保存エリア (1:内部画像用 2:画像収集用)
+#include "dynamic/set_gui.hsp"			//GUI設定
+#include "dynamic/fetch_img.hsp"		//画像収集
+
+gsel 0
+EventGUIRewrite
+title AppName
+
 if getSini("notify")="Enable" {
 	SetTrayIconFile "user32.dll"
 	CreateTrayIcon "",2,0
 	PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は準備が完了しました。",2,0
 }
-color 0,0,0
-
-#include "dynamic/set_gui.hsp"		//GUI設定
-#include "dynamic/set_gui_page.hsp"	//ページ表示
-
 goto *MainLoop
+
+#include "dynamic/execute.hsp"
 
 //==============================================================================
 /*
@@ -78,18 +96,20 @@ goto *MainLoop
 getkey Press0,17
 getkey Press1,18
 getkey Press2,32
-if (Press0) and (Press1) and (Press2) : title AppName : gsel 0,2 : stop
+if (Press0) and (Press1) and (Press2) {
+	if IsWindowSee = 0 {gsel 0,2 : IsWindowSee=1}else{gsel 0,-1 : IsWindowSee=0}
+	await 300
+}
 await 1
 goto *MainLoop
 
 *ClickEventGoAdv
 	NowPageCnt++
-	#include "dynamic/set_gui_page.hsp"//ページ表示
+	EventGUIRewrite
 return
 
 *ClickEventGoPrv
-	if NowPageCnt>0{NowPageCnt--}
-	#include "dynamic/set_gui_page.hsp"//ページ表示
+	if NowPageCnt>0{NowPageCnt--:EventGUIRewrite}
 return
 
 *ClickEventConfig
@@ -97,5 +117,9 @@ return
 return
 
 *ClickEventClose
-gsel 0,-1
-goto *MainLoop
+	if getSini("notify")="Enable" {
+		SetTrayIconFile "user32.dll"
+		CreateTrayIcon "",2,0
+		PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は終了しました。",2,0
+	}
+	end

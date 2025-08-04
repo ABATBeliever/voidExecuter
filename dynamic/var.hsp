@@ -4,9 +4,13 @@ dim Press1,16
 dim Press2,16
 dim count
 dim a
+dim IsWindowSee : IsWindowSee=0
 dim NowPageCnt
+
 NowPageCnt=0
 sdim tmp
+sdim tmp2
+sdim sel         : sel=""
 InfoType =""
 InfoLabel=""
 Info1    =""

@@ -70,4 +70,3 @@ repeat count
 	if Info1(cnt)=""                               : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:第3データの破損"
 	//Info2は空白を許す
 loop
-count--

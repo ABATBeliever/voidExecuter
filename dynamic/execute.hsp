@@ -1,0 +1,72 @@
+//=======================================
+/*
+	1x
+*/
+*Button1_1
+sel=""+str((NowPageCnt))+"-1-1":gosub *ClickEventExecute:return
+*Button1_2
+sel=""+str((NowPageCnt))+"-1-2":gosub *ClickEventExecute:return
+*Button1_3
+sel=""+str((NowPageCnt))+"-1-3":gosub *ClickEventExecute:return
+*Button1_4
+sel=""+str((NowPageCnt))+"-1-4":gosub *ClickEventExecute:return
+*Button1_5
+sel=""+str((NowPageCnt))+"-1-5":gosub *ClickEventExecute:return
+
+//=======================================
+/*
+	2x
+*/
+*Button2_1
+sel=""+str((NowPageCnt))+"-2-1":gosub *ClickEventExecute:return
+*Button2_2
+sel=""+str((NowPageCnt))+"-2-2":gosub *ClickEventExecute:return
+*Button2_3
+sel=""+str((NowPageCnt))+"-2-3":gosub *ClickEventExecute:return
+*Button2_4
+sel=""+str((NowPageCnt))+"-2-4":gosub *ClickEventExecute:return
+*Button2_5
+sel=""+str((NowPageCnt))+"-2-5":gosub *ClickEventExecute:return
+
+//=======================================
+/*
+	3x
+*/
+*Button3_1
+sel=""+str((NowPageCnt))+"-3-1":gosub *ClickEventExecute:return
+*Button3_2
+sel=""+str((NowPageCnt))+"-3-2":gosub *ClickEventExecute:return
+*Button3_3
+sel=""+str((NowPageCnt))+"-3-3":gosub *ClickEventExecute:return
+*Button3_4
+sel=""+str((NowPageCnt))+"-3-4":gosub *ClickEventExecute:return
+*Button3_5
+sel=""+str((NowPageCnt))+"-3-5":gosub *ClickEventExecute:return
+
+//=======================================
+/*
+	4x
+*/
+*Button4_1
+sel=""+str((NowPageCnt))+"-4-1":gosub *ClickEventExecute:return
+*Button4_2
+sel=""+str((NowPageCnt))+"-4-2":gosub *ClickEventExecute:return
+*Button4_3
+sel=""+str((NowPageCnt))+"-4-3":gosub *ClickEventExecute:return
+*Button4_4
+sel=""+str((NowPageCnt))+"-4-4":gosub *ClickEventExecute:return
+*Button4_5
+sel=""+str((NowPageCnt))+"-4-5":gosub *ClickEventExecute:return
+
+//======================================
+/*
+	実行
+*/
+*ClickEventExecute
+	split sel,"-",tmp
+	a =(int(tmp(0))*20)
+	a+=((int(tmp(1))-1)*5)
+	a+=int(tmp(2))
+	dialog "ボタン実行\n対象:"+sel+"\nID:"+a+"\n※GUI表示とは違い0から始まる。"
+	sel=""
+return
