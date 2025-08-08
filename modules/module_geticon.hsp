@@ -1,0 +1,22 @@
+/*
+Powered by hoyoqwerty
+記述日:2025/07/30
+*/
+
+#include "user32.as"
+#include "shell32.as"
+
+#module
+	#deffunc getIconFunc str p1, int p2, int p3, int p4, int p5
+		//           絶対パス gsel   サイズ(px) x       y
+		tmp=p1
+		strrep tmp,"/","\\"
+		dim shfileinfo,88
+		shgetfileinfo tmp,0,varptr(shfileinfo),$160,$100
+		gsel int(p2)
+		redraw 0
+		drawiconex hdc,p4,p5,shfileinfo(0),int(p3),int(p3),0,0,3
+		destroyicon shfileinfo(0)
+		redraw 1
+	return
+#global

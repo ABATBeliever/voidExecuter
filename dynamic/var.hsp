@@ -2,6 +2,7 @@ dim IsDPI,6
 dim Press0,16
 dim Press1,16
 dim Press2,16
+dim DebugDIR,16
 dim count
 dim a
 dim IsWindowSee : IsWindowSee=0
@@ -15,5 +16,6 @@ InfoType =""
 InfoLabel=""
 Info1    =""
 Info2    =""
-//sdim JsonPtr,512
-//sdim JsonVersion,8
+
+sdim AppPath,1024
+GetModuleFileName hModule,varptr(AppPath), 256

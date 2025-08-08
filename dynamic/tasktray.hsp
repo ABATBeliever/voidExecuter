@@ -1,0 +1,6 @@
+gsel 0
+hwnd0=hwnd
+RegisterWindowMessage "TaskbarCreated"
+oncmd  gosub *AddTasktrayIcon,    stat
+oncmd  gosub *OnTrayIcon,        $0401
+gosub *AddTasktrayIcon

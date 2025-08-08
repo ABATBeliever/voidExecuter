@@ -1,0 +1,18 @@
+#module
+	#deffunc FetchImage
+		repeat length(InfoType@)-1
+			switch InfoType@(cnt)
+				case "url"
+					swbreak
+				case "script"
+					swbreak
+				default
+					pVertical   =int(cnt/5)
+					pHorizontal =int(cnt\5)
+					tmp=Info1@(cnt)
+					getIconFunc tmp,2,80,pHorizontal*80,pVertical*80
+					swbreak
+				swend
+		loop
+	return
+#global

@@ -1,5 +1,5 @@
 //
-// Void Executer   v0.6.0
+// Void Executer   v0.9.2
 //
 // This Software is under MPL
 // 
@@ -8,48 +8,67 @@
 	ビルド用の設定・定数
 */
 #packopt hide 1
-#packopt icon    "app.ico"
-#packopt version "build.ini"
+#packopt icon     "app.ico"
+#packopt version  "build.ini"
 
-#define AppName "Void Executer"
-#define AppVer  "v0.6.0"
-#define Verint  "060"
+#define AppName   "Void Executer [UTF-8] - PublicBeta"
+#define AppVer    "v0.9.2"
+#define Verint    "0.9.2"
+#define SysAbout  ""+__hspver__+" "+__date__+" "+__time__
+#define UpdateURL "https://abatbeliever.net/app/voidExecuter/"
 
+#include "hsp3utf.as"
 //==============================================================================
 /*
 	includeするファイル一覧
 */
 
-#epackdir       "include/default.dat"
-#epackdir       "include/default.json"
-#epackdir       "include/hspinet.dll.pack"
+#epackdir "include/default.dat"			//デフォルトの設定ファイル
+#epackdir "include/default.json"		//デフォルトのリストファイル
+#epackdir "include/hspinet.dll.pack"	//hspinetのバックアップ
 
-#epackdir       "include/Exit.png"
-#epackdir       "include/Config.png"
-#epackdir       "include/Button_Prv_Positive.png"
-#epackdir       "include/Button_Prv_Negative.png"
-#epackdir       "include/Button_Adv_Positive.png"
-#epackdir       "include/Button_Adv_Negative.png"
+#epackdir "include/Exit.png"
+#epackdir "include/Config.png"
+#epackdir "include/Icon_Script.png"
+#epackdir "include/Icon_Internet.png"
+#epackdir "include/Button_Prv_Positive.png"
+#epackdir "include/Button_Prv_Negative.png"
+#epackdir "include/Button_Adv_Positive.png"
+#epackdir "include/Button_Adv_Negative.png"
 
 //==============================================================================
 /*
 	依存モジュール
 */
+#include "modules/module_writelog.hsp"
+WriteLog "Error Handle"
+onerror gosub *Error
 
+WriteLog "Loading modules"
 #include "obj.as"
 #include "user32.as"
+#include "kernel32.as"
 
-#include "modules/module_ini.hsp"
 #include "modules/module_dpi.hsp"
-#include "modules/module_toast.hsp"
 #include "modules/module_isexist.hsp"
+#include "modules/module_geticon.hsp"
 
+#include "modules/mod_openini.as"
 #include "modules/modTaskDialog.as"
+
+//==============================================================================
+/*
+	二重起動防止
+*/
+//CreateMutex 0, 0, "VOIDEXECUTER"
+//GetLastError
+//if stat=$B7{dialog "複数起動を検出しました。",1,AppName:end}
 
 //==============================================================================
 /*
 	読み込み
 */
+WriteLog "init hspinet"
 #include "dynamic/hspinet.hsp"		//hspinetの準備
 #include "hspinet.as"
 
@@ -59,12 +78,14 @@ title ""+AppName+" - 起動中"
 #include "dynamic/load_config.hsp"	//設定ファイルのロード
 #include "dynamic/update.hsp"		//アップデート確認
 #include "dynamic/load_list.hsp"	//ランチャーファイルのロード
+#include "dynamic/tasktray.hsp"		//タスクトレイに登録
 
 //==============================================================================
 /*
 	ウィンドウ準備・通知
 */
-	
+
+WriteLog "Window Prepare"
 bgscr 0,640,480,2,(ginfo(20)-640)/2,(ginfo(21)-480)/2
 color int(colors(0)),int(colors(1)),int(colors(2)):boxf:color 0,0,0
 font "ＭＳ Ｐゴシック",26:objmode 2,1
@@ -73,20 +94,25 @@ color 0,0,0
 
 #include "dynamic/set_gui_buffer.hsp"	//画像保存エリア (1:内部画像用 2:画像収集用)
 #include "dynamic/set_gui.hsp"			//GUI設定
-#include "dynamic/fetch_img.hsp"		//画像収集
-
+#include "dynamic/img_manager.hsp"		//画像収集
 gsel 0
-EventGUIRewrite
+
+FetchImage			//イメージ取得実行
+EventGUIRewrite		//描画
+
 title AppName
 
-if getSini("notify")="Enable" {
-	SetTrayIconFile "user32.dll"
-	CreateTrayIcon "",2,0
-	PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は準備が完了しました。",2,0
+if getini_str("Config","Notify","Disable")="Enable" {
+	TitleName    = ""+AppName+" - "+AppVer
+	HeadLineText = "準備が完了しました"
+	BodyText     = ""
+	exec "cmd.exe /c start /min powershell.exe -Command \"$headlineText='"+HeadLineText+"';$bodyText='"+BodyText+"';$ToastText02=[Windows.UI.Notifications.ToastTemplateType,Windows.UI.Notifications,ContentType=WindowsRuntime]::ToastText02;$TemplateContent=[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]::GetTemplateContent($ToastText02);$TemplateContent.SelectSingleNode('//text[@id=\"1\"]').InnerText=$headlineText;$TemplateContent.SelectSingleNode('//text[@id=\"2\"]').InnerText=$bodyText;$AppId='"+TitleName+"';[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppId).Show($TemplateContent)\""
 }
+WriteLog "Dynamic Task Complete."
 goto *MainLoop
 
-#include "dynamic/execute.hsp"
+#include "static/execute.hsp"
+#include "static/fetch_image.hsp"
 
 //==============================================================================
 /*
@@ -96,8 +122,18 @@ goto *MainLoop
 getkey Press0,17
 getkey Press1,18
 getkey Press2,32
+getkey DebugDIR,27
+if (DebugDIR) { dialog ""+LogData(),0,"Log" }
 if (Press0) and (Press1) and (Press2) {
-	if IsWindowSee = 0 {gsel 0,2 : IsWindowSee=1}else{gsel 0,-1 : IsWindowSee=0}
+	if IsWindowSee = 0 {
+		gsel 0,2
+		IsWindowSee=1
+		WriteLog "Activate(Button)"
+	}else{
+		gsel 0,-1
+		IsWindowSee=0
+		WriteLog "Deactivate(Button)"
+	}
 	await 300
 }
 await 1
@@ -106,20 +142,73 @@ goto *MainLoop
 *ClickEventGoAdv
 	NowPageCnt++
 	EventGUIRewrite
+	WriteLog "GoAdv *"+str(NowPageCnt)
 return
 
 *ClickEventGoPrv
-	if NowPageCnt>0{NowPageCnt--:EventGUIRewrite}
+	if NowPageCnt>0{
+		NowPageCnt--
+		EventGUIRewrite
+		WriteLog "GoPrv *"+str(NowPageCnt)
+	}
 return
 
 *ClickEventConfig
+	WriteLog "ClickEventConfig"
 	dialog "申し訳ありません。設定はまだ実装されていません。"
 return
 
 *ClickEventClose
-	if getSini("notify")="Enable" {
-		SetTrayIconFile "user32.dll"
-		CreateTrayIcon "",2,0
-		PopupBalloonTip ""+AppName+" - "+Appver,""+AppName+" は終了しました。",2,0
+	WriteLog "Exit"
+    dim p,22: p=88,hwnd0,1           // NOTIFYICONDATA 構造体
+    Shell_NotifyIcon $2,varptr(p)    // アイコン削除 $2: NIM_DELETE
+	if getini_str("Config","Notify","Disable")="Enable" {
+	TitleName    = ""+AppName+" - "+AppVer
+	HeadLineText = "アプリを終了しました"
+	BodyText     = ""
+	exec "cmd.exe /c start /min powershell.exe -Command \"$headlineText='"+HeadLineText+"';$bodyText='"+BodyText+"';$ToastText02=[Windows.UI.Notifications.ToastTemplateType,Windows.UI.Notifications,ContentType=WindowsRuntime]::ToastText02;$TemplateContent=[Windows.UI.Notifications.ToastNotificationManager,Windows.UI.Notifications,ContentType=WindowsRuntime]::GetTemplateContent($ToastText02);$TemplateContent.SelectSingleNode('//text[@id=\"1\"]').InnerText=$headlineText;$TemplateContent.SelectSingleNode('//text[@id=\"2\"]').InnerText=$bodyText;$AppId='"+TitleName+"';[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier($AppId).Show($TemplateContent)\""
+}
+end
+
+*AddTasktrayIcon
+	WriteLog "AddTasktray Exe:"+AppPath
+    strrep AppPath,"\\\\","\\"
+    ExtractIconEx varptr(AppPath),0,0,varptr(hIcon),1
+    dim p,22
+    p=88,hwnd0,1,$0007,$0401,hIcon
+    poke p,24,AppName
+    Shell_NotifyIcon $0,varptr(p)
+    dim p
+    WriteLog "Done"
+return
+
+*OnTrayIcon
+    if wparam=1&lparam=$0201{
+		if IsWindowSee = 0 {
+			gsel 0,2
+			IsWindowSee=1
+			WriteLog "Activate(Tray)"
+		}else{
+			gsel 0,-1
+			IsWindowSee=0
+			WriteLog "Deactivate(Tray)"
+		}
 	}
-	end
+return
+
+*Error
+	WriteLog "Critical Error Reported\n*"+wparam+" / "+lparam+"\nAppPath:"+AppPath+"\nNowPath:"+dir_cur
+    dim p,22: p=88,hwnd0,1           // NOTIFYICONDATA 構造体
+    Shell_NotifyIcon $2,varptr(p)    // アイコン削除 $2: NIM_DELETE
+	p1=""+AppName@+" - 重大な問題"
+	p2="深刻なエラーが報告されました"
+	p3="エラー番号:"+wparam
+	p4="終了または停止することが強く推奨されます。\n\n'終了(推奨)'を選択した場合、直ちに安全に終了します。\n'無視して続行'を選択した場合、処理に復帰します。"
+	p5="終了(推奨)\n無視して続行"
+	p6=3
+	p7=1
+	DialogVistaEx p1,p2,p3,p4,p5,p6,p7
+	switch stat
+		case 102 :WriteLog "Ignore":return
+		default  :end:end
+	swend

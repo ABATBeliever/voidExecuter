@@ -1,33 +1,72 @@
 if IsNotExist("config.dat") {
-	dialog "設定ファイルのロードができません。初期設定が使用されます",0,AppName+" - 通知"
+	WriteLog "config not found"
 	bcopy "include/default.dat","config.dat"
 }
 
-Loadini "config.dat"
+setini_file dir_cur+"/config.dat"
 
-if getSini("DPI")="New"    {
-	DPI_AwarenessContext
-	IsDPI=stat
-	if IsDPI!=0 : dialog "DPIモードは「New」が選択されましたが、何らかの理由で関数「SetProcessDpiAwarenessContext」を実行できません。",1,AppName+" - 警告"
-}
-if getSini("DPI")="Legacy" {
-	DPI_Aware
-	IsDPI=stat
-	if IsDPI!=0 : dialog "DPIモードは「Legacy」が選択されましたが、何らかの理由で関数「SetProcessDpiAware」を実行できません。",1,AppName+" - 警告"
-}
-if getSini("DPI")="Auto"   {
-	DPI
-	IsDPI=stat
-	switch IsDPI
-		case 300 : swbreak //Awareness
-		case 200 : swbreak //Aware
-		default  : dialog "DPIモードは「Auto」が選択されましたが、何らかの理由ですべてのDPIモードが実行できません。",1,AppName+" - 警告" : swbreak
-	swend
-}
+repeat
+	if getini_str("Config","Version","null")!="Beta1" {
+		WriteLog "Config Inconpatible"
+		p1=""+AppName@+" - 重大な問題"
+		p2="設定ファイルが破損しているか、互換性のないバージョンです。"
+		p3="要求バージョン: Beta1\n設定ファイルのバージョン: "+getini_str("Config","Version","バージョン把握不能")
+		p4="'リセット'を選択した場合、デフォルトの設定に上書きします。\n'無視'を選択した場合、続行します。\n\n※自動修復は利用できません。"
+		p5="リセット\n無視"
+		p6=3
+		p7=1
+		DialogVistaEx p1,p2,p3,p4,p5,p6,p7
+		switch stat
+			case 101 : WriteLog "Reset Config" : bcopy "include/default.dat","config.dat" : swbreak
+			default  : break
+		swend
+	}else{
+		break
+	}
+loop
 
-tmp=getSini("color")
+switch getini_str("Config","DPI","None")
+	case "New"
+		WriteLog "DPI>>New"
+		DPI_AwarenessContext
+		IsDPI=stat
+		if IsDPI!=0 {
+			WriteLog "DPI New,Failed"
+			dialog "DPIモードは「New」が選択されましたが、何らかの理由で関数「SetProcessDpiAwarenessContext」を実行できません。",1,AppName+" - 警告"
+		}else{
+			WriteLog "DPI New,SUCSESS"
+		}
+		swbreak
+	case "Legacy"
+		WriteLog "DPI>>Legacy"
+		DPI_Aware
+		IsDPI=stat
+		if IsDPI!=0 {
+			WriteLog "DPI Legacy,Failed"
+			dialog "DPIモードは「Legacy」が選択されましたが、何らかの理由で関数「SetProcessDpiAware」を実行できません。",1,AppName+" - 警告"
+		}else{
+			WriteLog "DPI Legacy,SUCSESS"
+		}
+		swbreak
+	case "Auto"
+		WriteLog "DPI>>Auto"
+		DPI
+		IsDPI=stat
+		switch IsDPI
+			case 300 : swbreak //Awareness
+			case 200 : swbreak //Aware
+			default  : WriteLog "DPI Auto,Failed" : dialog "DPIモードは「Auto」が選択されましたが、何らかの理由ですべてのDPIモードが実行できません。",1,AppName+" - 警告" : swbreak
+		swend
+		swbreak
+	default
+		WriteLog "DPI>>Skipped"
+swend
+
+tmp=getini_str("Config","Color","")
+WriteLog "Color:"+tmp
 split tmp,",",colors
 if length(colors)!=3 {
+	WriteLog "Color:Default"
 	dialog "色設定が不正です。デフォルトが使用されます。",1,AppName+" - 警告"
 	colors(0)=192:colors(1)=192:colors(2)=192
 }

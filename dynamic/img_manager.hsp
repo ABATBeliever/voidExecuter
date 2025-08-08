@@ -1,0 +1,52 @@
+#module
+	#deffunc WriteButton int p1
+		gsel 0
+		clrobj 4
+		
+		objsize 80, 40
+		pos 280,420:input tmp@:objenable 4,0:PanelGUI=objinfo(stat, 2)
+		GetWindowLong PanelGUI, -16
+		SetWindowLong PanelGUI, -16, stat | $1
+		
+		objsize 80,80
+		
+		pos  90, 20 : WriteImage 00,0,0 : button gosub "",*Button1_1@
+		pos 185, 20 : WriteImage 01,0,1 : button gosub "",*Button1_2@
+		pos 280, 20 : WriteImage 02,0,2 : button gosub "",*Button1_3@
+		pos 375, 20 : WriteImage 03,0,3 : button gosub "",*Button1_4@
+		pos 470, 20 : WriteImage 04,0,4 : button gosub "",*Button1_5@
+		
+		pos  90,115 : WriteImage 05,1,0 : button gosub "",*Button2_1@
+		pos 185,115 : WriteImage 06,1,1 : button gosub "",*Button2_2@
+		pos 280,115 : WriteImage 07,1,2 : button gosub "",*Button2_3@
+		pos 375,115 : WriteImage 08,1,3 : button gosub "",*Button2_4@
+		pos 470,115 : WriteImage 09,1,4 : button gosub "",*Button2_5@
+
+		pos  90,210 : WriteImage 10,2,0 : button gosub "",*Button3_1@
+		pos 185,210 : WriteImage 11,2,1 : button gosub "",*Button3_2@
+		pos 280,210 : WriteImage 12,2,2 : button gosub "",*Button3_3@
+		pos 375,210 : WriteImage 13,2,3 : button gosub "",*Button3_4@
+		pos 470,210 : WriteImage 14,2,4 : button gosub "",*Button3_5@
+
+		pos  90,305 : WriteImage 15,3,0 : button gosub "",*Button4_1@
+		pos 185,305 : WriteImage 16,3,1 : button gosub "",*Button4_2@
+		pos 280,305 : WriteImage 17,3,2 : button gosub "",*Button4_3@
+		pos 375,305 : WriteImage 18,3,3 : button gosub "",*Button4_4@
+		pos 470,305 : WriteImage 19,3,4 : button gosub "",*Button4_5@
+	return
+
+	#deffunc WriteImage int p1, int p2, int p3
+		if length(InfoType@)-1<int(NowPageCnt@*20+p1) : objimage 1,192,200,192,200 : return
+		switch InfoType@(NowPageCnt@*20+p1)
+			case "url"
+				objimage 1,192,120,192,120
+				swbreak
+			case "script"
+				objimage 1,192, 40,192, 40
+				swbreak
+			default		//app‚Ü‚½‚Ífile
+				objimage 2,(p3*80),(p2*80+NowPageCnt@*320),(p3*80),(p2*80+NowPageCnt@*320)
+				swbreak
+		swend
+	return
+#global

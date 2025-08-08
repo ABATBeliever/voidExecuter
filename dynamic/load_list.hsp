@@ -1,25 +1,26 @@
 #module
 	#deffunc ListJsonBreak str p3
+		WriteLog "ListJsonBreak *"+p3
 		p1=""+AppName@+" - 警告"
 		p2="ランチャーリストが破損しています。"
-		p4="'初期化'を選択した場合、既定が復元されますが、設定は消えます。\n'無視'を選択した場合、エラーを無視し続行します。\n'終了'を選択するかこのポップアップを閉じた場合、"+AppName@+"は終了します。"
-		p5="初期化\n無視\n終了"
+		p4="'初期化'を選択した場合、既定が復元されますが、設定は消えます。\n'終了'を選択するかこのポップアップを閉じた場合、"+AppName@+"は終了します。"
+		p5="初期化\n終了"
 		p6=2
 		p7=1
 		DialogVistaEx p1,p2,p3,p4,p5,p6,p7
 		switch stat
-			case 101 : bcopy "include/default.json","list.json" : dialog "既定値を復元しました。再起動してください。",0,AppName@+" - 情報" : end
-			case 102 : swbreak
-			default  : end
+			case 101 : WriteLog "List Reset" : bcopy "include/default.json","list.json" : dialog "既定値を復元しました。再起動してください。",0,AppName@+" - 情報" : end
+			default  : WriteLog "Exit"       : end
 		swend
 	return
 #global
 
 if IsNotExist("list.json") {
-	dialog "ランチャーリストファイルのロードができません。初期設定が使用されます",0,AppName+" - 通知"
+	WriteLog "Create List"
 	bcopy "include/default.json","list.json"
 }
 
+WriteLog "Load list.json"
 notesel JsonData
 noteload "list.json"
 jsonopen JsonPtr,JsonData
@@ -59,7 +60,6 @@ while(InfoPtr!=NULL)
 			Info2(count)    ="Invalid"
 			swbreak
 	swend
-//	dialog "タイプ:"+InfoType(count)+"\n表示名:"+InfoLabel(count)+"\nデータ1:"+Info1(count)+"\nデータ2:"+Info2(count)
 	jsonnext InfoPtr,InfoPtr,0
 	count++
 wend
@@ -70,3 +70,4 @@ repeat count
 	if Info1(cnt)=""                               : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:第3データの破損"
 	//Info2は空白を許す
 loop
+WriteLog "Load List SUCSESS"

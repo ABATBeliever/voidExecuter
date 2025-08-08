@@ -8,53 +8,29 @@ objimage 1,96,0,96,1:pos (640-48),0:button gosub "",*ClickEventGoAdv:GoAdv=objin
 
 objsize 40, 40
 objimage 1,192,00,192,01:pos 225,420:button gosub  "",*ClickEventConfig :Config=objinfo(stat, 2)
-objimage 1,192,40,192,41:pos 375,420:button gosub  "",*ClickEventClose  :Close =objinfo(stat, 2)
+objimage 1,232,00,232,01:pos 375,420:button gosub  "",*ClickEventClose  :Close =objinfo(stat, 2)
 
 objsize 80, 40
 pos 280,420:input tmp:objenable 4,0:PanelGUI=objinfo(stat, 2)
 GetWindowLong PanelGUI, -16
 SetWindowLong PanelGUI, -16, stat | $1
 
-objsize 80,80	//95隙間
-pos  90, 20 : button gosub "1-1",*Button1_1
-pos 185, 20 : button gosub "1-2",*Button1_2
-pos 280, 20 : button gosub "1-3",*Button1_3
-pos 375, 20 : button gosub "1-4",*Button1_4
-pos 470, 20 : button gosub "1-5",*Button1_5
-
-pos  90,115 : button gosub "2-1",*Button2_1
-pos 185,115 : button gosub "2-2",*Button2_2
-pos 280,115 : button gosub "2-3",*Button2_3
-pos 375,115 : button gosub "2-4",*Button2_4
-pos 470,115 : button gosub "2-5",*Button2_5
-
-pos  90,210 : button gosub "3-1",*Button3_1
-pos 185,210 : button gosub "3-2",*Button3_2
-pos 280,210 : button gosub "3-3",*Button3_3
-pos 375,210 : button gosub "3-4",*Button3_4
-pos 470,210 : button gosub "3-5",*Button3_5
-
-pos  90,315 : button gosub "4-1",*Button4_1
-pos 185,315 : button gosub "4-2",*Button4_2
-pos 280,315 : button gosub "4-3",*Button4_3
-pos 375,315 : button gosub "4-4",*Button4_4
-pos 470,315 : button gosub "4-5",*Button4_5
-
 #module
 	#deffunc EventGUIRewrite
 		gsel 0
 		//本来下の 4 はPanelGUI@ を指定する
-		objprm 4,""+str((NowPageCnt@+1))+"/"+str(screenMax@+1)
+		objprm 4,""+str((NowPageCnt@+1))+"/"+str(screenMax@)
 		//本来objenableの第一引数は GoPrv@ を指定する
 		if NowPageCnt@!=0           {//左側限界
 			tmp2@=48,480,0,       0:resizeobj 0,tmp2@,2//0,000に戻す
 		}else{
 			tmp2@=48,480,0,     500:resizeobj 0,tmp2@,2//0,500に飛ばす
 		}
-		if NowPageCnt@=(screenMax@) {//右側限界
+		if NowPageCnt@=(screenMax@-1) {//右側限界
 			tmp2@=48,480,0,     500:resizeobj 1,tmp2@,2//48,500に飛ばす
 		}else{
 			tmp2@=48,480,(640-48),0:resizeobj 1,tmp2@,2//(640-48),0に戻す
 		}
+		WriteButton
 	return
 #global

@@ -1,20 +1,21 @@
-buffer 1,232,480,0
+screen 1,272,480,0:title "Buffer1"
 gsel 1
-pos 000,00:picload "include/Button_Prv_Positive.png",1
-pos 048,00:picload "include/Button_Prv_Negative.png",1
-pos 096,00:picload "include/Button_Adv_Positive.png",1
-pos 144,00:picload "include/Button_Adv_Negative.png",1
-pos 192,00:picload "include/Config.png",1
-pos 192,40:picload "include/Exit.png",1
+pos   0,  0:picload "include/Button_Prv_Positive.png",1
+pos  48,  0:picload "include/Button_Prv_Negative.png",1
+pos  96,  0:picload "include/Button_Adv_Positive.png",1
+pos 144,  0:picload "include/Button_Adv_Negative.png",1
+pos 192,  0:picload "include/Config.png",1
+pos 232,  0:picload "include/Exit.png",1
+pos 192, 40:picload "include/Icon_Script.png",1
+pos 192,120:picload "include/Icon_Internet.png",1
 
-count=count+30
 tmp=count
 repeat
 	tmp=tmp-20
 	if tmp<=0{screenMax=cnt+1:break}
 loop
-dialog "ID”:"+count+"\n‡Œv½¸Ø°Ý”:"+screenMax+"\nŠm•Û‚³‚ê‚éBuffer2»²½Þ:400x"+str(screenMax*80),0,AppName+" - î•ñ"
-buffer 2,400,screenMax*80,0:title "Buffer2"
-color 0,0,0:boxf
+
+screen 2,400,(screenMax)*320,0:title "Buffer2"
+color 255,255,255:boxf
 
 gsel 0

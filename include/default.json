@@ -9,15 +9,339 @@
     },
     {
       "type": "app",
-      "label": "Notepad",
+      "label": "Notepad1",
       "path": "C:/Windows/notepad.exe",
       "args": ""
     },
     {
-      "type": "file",
-      "label": "ファイル実行のサンプル",
-      "path": "sample.png",
-      "cliant":  ""
+      "type": "app",
+      "label": "エクスプローラ1",
+      "path": "C:/Windows/explorer.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "レジストリ1",
+      "path": "C:/Windows/regedit.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "クリーンアップ1",
+      "path": "C:/Windows/System32/cleanmgr.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コマンドプロンプト1",
+      "path": "C:/Windows/System32/cmd.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "色の管理1",
+      "path": "C:/Windows/System32/colorcpl.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンポーネントサービス1",
+      "path": "C:/Windows/System32/comexp.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンピュータの管理1",
+      "path": "C:/Windows/System32/compmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コントロールパネル1",
+      "path": "C:/Windows/System32/control.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "デフラグ1",
+      "path": "C:/Windows/System32/dfrgui.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ディスクの管理1",
+      "path": "C:/Windows/System32/diskmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ブルートゥース送信1",
+      "path": "C:/Windows/System32/fsquirt.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "システム情報1",
+      "path": "C:/Windows/System32/msinfo32.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "パフォーマンスモニター1",
+      "path": "C:/Windows/System32/perfmon.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "Notepad2",
+      "path": "C:/Windows/notepad.exe",
+      "args": ""
+    },
+    {
+      "type": "app",
+      "label": "エクスプローラ2",
+      "path": "C:/Windows/explorer.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "レジストリ2",
+      "path": "C:/Windows/regedit.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "クリーンアップ2",
+      "path": "C:/Windows/System32/cleanmgr.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コマンドプロンプト2",
+      "path": "C:/Windows/System32/cmd.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "色の管理2",
+      "path": "C:/Windows/System32/colorcpl.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンポーネントサービス2",
+      "path": "C:/Windows/System32/comexp.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンピュータの管理2",
+      "path": "C:/Windows/System32/compmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コントロールパネル2",
+      "path": "C:/Windows/System32/control.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "デフラグ2",
+      "path": "C:/Windows/System32/dfrgui.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ディスクの管理2",
+      "path": "C:/Windows/System32/diskmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ブルートゥース送信2",
+      "path": "C:/Windows/System32/fsquirt.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "システム情報2",
+      "path": "C:/Windows/System32/msinfo32.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "パフォーマンスモニター2",
+      "path": "C:/Windows/System32/perfmon.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "Notepad3",
+      "path": "C:/Windows/notepad.exe",
+      "args": ""
+    },
+    {
+      "type": "app",
+      "label": "エクスプローラ3",
+      "path": "C:/Windows/explorer.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "レジストリ3",
+      "path": "C:/Windows/regedit.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "クリーンアップ3",
+      "path": "C:/Windows/System32/cleanmgr.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コマンドプロンプト3",
+      "path": "C:/Windows/System32/cmd.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "色の管理3",
+      "path": "C:/Windows/System32/colorcpl.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンポーネントサービス3",
+      "path": "C:/Windows/System32/comexp.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンピュータの管理3",
+      "path": "C:/Windows/System32/compmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コントロールパネル3",
+      "path": "C:/Windows/System32/control.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "デフラグ3",
+      "path": "C:/Windows/System32/dfrgui.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ディスクの管理3",
+      "path": "C:/Windows/System32/diskmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ブルートゥース送信3",
+      "path": "C:/Windows/System32/fsquirt.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "システム情報3",
+      "path": "C:/Windows/System32/msinfo32.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "パフォーマンスモニター3",
+      "path": "C:/Windows/System32/perfmon.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "Notepad4",
+      "path": "C:/Windows/notepad.exe",
+      "args": ""
+    },
+    {
+      "type": "app",
+      "label": "エクスプローラ4",
+      "path": "C:/Windows/explorer.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "レジストリ4",
+      "path": "C:/Windows/regedit.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "クリーンアップ4",
+      "path": "C:/Windows/System32/cleanmgr.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コマンドプロンプト4",
+      "path": "C:/Windows/System32/cmd.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "色の管理4",
+      "path": "C:/Windows/System32/colorcpl.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンポーネントサービス4",
+      "path": "C:/Windows/System32/comexp.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コンピュータの管理4",
+      "path": "C:/Windows/System32/compmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "コントロールパネル4",
+      "path": "C:/Windows/System32/control.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "デフラグ4",
+      "path": "C:/Windows/System32/dfrgui.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ディスクの管理4",
+      "path": "C:/Windows/System32/diskmgmt.msc",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "ブルートゥース送信4",
+      "path": "C:/Windows/System32/fsquirt.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "システム情報4",
+      "path": "C:/Windows/System32/msinfo32.exe",
+      "args":  ""
+    },
+    {
+      "type": "app",
+      "label": "パフォーマンスモニター4",
+      "path": "C:/Windows/System32/perfmon.exe",
+      "args":  ""
     },
     {
       "type": "script",
