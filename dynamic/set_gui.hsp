@@ -7,19 +7,20 @@ objimage 1,00,0,00,1:pos 0       ,0:button gosub "",*ClickEventGoPrv:GoPrv=objin
 objimage 1,96,0,96,1:pos (640-48),0:button gosub "",*ClickEventGoAdv:GoAdv=objinfo(stat, 2)
 
 objsize 40, 40
-objimage 1,192,00,192,01:pos 225,420:button gosub  "",*ClickEventConfig :Config=objinfo(stat, 2)
-objimage 1,232,00,232,01:pos 375,420:button gosub  "",*ClickEventClose  :Close =objinfo(stat, 2)
+objimage 1,192,  0,192,  1:pos 185,420:button gosub  "",*ClickEventConfig :Config=objinfo(stat, 2)
+objimage 1,232,  0,232,  1:pos 415,420:button gosub  "",*ClickEventEdit   :Edit  =objinfo(stat, 2)
+objimage 1,192,280,192,281:pos 470,420:button gosub  "",*ClickEventClose  :Close =objinfo(stat, 2)
 
-objsize 80, 40
-pos 280,420:input tmp:objenable 4,0:PanelGUI=objinfo(stat, 2)
+objsize 160, 40
+pos 240,420:input tmp:objenable 5,0:PanelGUI=objinfo(stat, 2)
 GetWindowLong PanelGUI, -16
 SetWindowLong PanelGUI, -16, stat | $1
 
 #module
 	#deffunc EventGUIRewrite
 		gsel 0
-		//本来下の 4 はPanelGUI@ を指定する
-		objprm 4,""+str((NowPageCnt@+1))+"/"+str(screenMax@)
+		//本来下の 5 はPanelGUI@ を指定する
+		objprm 5,""+str((NowPageCnt@+1))+"/"+str(screenMax@)
 		//本来objenableの第一引数は GoPrv@ を指定する
 		if NowPageCnt@!=0           {//左側限界
 			tmp2@=48,480,0,       0:resizeobj 0,tmp2@,2//0,000に戻す

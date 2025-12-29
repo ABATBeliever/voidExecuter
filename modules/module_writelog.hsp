@@ -1,10 +1,18 @@
 #module
 	#deffunc init_WriteLog
-		InternalLog="[TARGET] "+gettime(0)+"/"+gettime(1)+"/"+gettime(3)+" "+gettime(4)+"/"+gettime(5)+":"+gettime(6)+"."+gettime(7)+" "+AppName@+" "+Verint@+"\n***START***"
+		write=0
+		InternalLog="[TARGET] "+gettime(0)+"/"+strf("%02d",gettime(1))+"/"+strf("%02d",gettime(3))+" "+strf("%02d",gettime(4))+":"+strf("%02d",gettime(5))+":"+strf("%02d",gettime(6))+":"+strf("%04d",gettime(7))+" "+AppName@+" "+Verint@+" "+SysAbout@+"\n***START***"
 	return
 	#deffunc WriteLog str p1
-		InternalLog="[INFO] "+gettime(0)+"/"+gettime(1)+"/"+gettime(3)+" "+gettime(4)+"/"+gettime(5)+":"+gettime(6)+"."+gettime(7)+" "+p1+"\n"+InternalLog
+		if write=0 {
+			InternalLog="[INFO] "+gettime(0)+"/"+strf("%02d",gettime(1))+"/"+strf("%02d",gettime(3))+" "+strf("%02d",gettime(4))+":"+strf("%02d",gettime(5))+":"+strf("%02d",gettime(6))+":"+strf("%04d",gettime(7))+" "+p1+"\n"+InternalLog
+		}
 	return
+	#deffunc Disable_WriteLog
+		InternalLog="Log Disabled"
+		write=1
+	return
+
 	#defcfunc LogData
 	return InternalLog
 #global

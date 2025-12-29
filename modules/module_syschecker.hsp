@@ -1,0 +1,47 @@
+#module
+	#deffunc SysChecker_init
+		#uselib "ntdll.dll"
+		#func RtlGetVersion "RtlGetVersion" sptr
+		#uselib "shlwapi.dll"
+		#func IsOS "IsOS" sptr
+		#define OS_ANYSERVER  29
+		#include "user32.as"
+		#include "kernel32.as"
+		dim OSVERSIONINFO, 37
+		OSVERSIONINFO = varsize(OSVERSIONINFO)
+		RtlGetVersion varptr(OSVERSIONINFO)
+		majorVersion = OSVERSIONINFO(1)
+		buildNumber = OSVERSIONINFO(3)
+	return
+	
+	#defcfunc OSVersionDIR
+		if (majorVersion >= 10) {
+			if (buildNumber >= 22000) {
+				OperatingSystem="WindowsNT ver11.0"
+			}else{
+				OperatingSystem="WindowsNT ver10.0"
+			}
+			if (IsOS(OS_ANYSERVER)) {
+				OperatingSystem+=" [Server]"
+			}else{
+				OperatingSystem+=""
+			}
+		}else{
+			OperatingSystem=sysinfo(0)+""
+		}
+	return OperatingSystem
+#global
+SysChecker_init
+/*
+tmp+="\nデスクトップ: "+dirinfo($10000)
+tmp+="\nドキュメント:"+dirinfo($10005)
+tmp+="\nピクチャー:"+dirinfo($10027)+"\n"
+tmp+="\nミュージック:"+dirinfo($1000D)
+tmp+="\nビデオ:"+dirinfo($1000E)+"\n"
+tmp+="\nスタートアップ(1):"+dirinfo($10007)
+tmp+="\nスタートアップ(2):"+dirinfo($10017)
+tmp+="\nスタートメニュー:"+dirinfo($1000B)+"\n"
+tmp+="\nApplication Data:"+dirinfo($10023)
+tmp+="\nProgram Files:"+dirinfo($10026)+"\n"
+tmp+="\nUsersフォルダ:"+dirinfo($10028)
+*/

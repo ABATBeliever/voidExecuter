@@ -1,13 +1,14 @@
-screen 1,272,480,0:title "Buffer1"
+buffer 1,272,480,0
 gsel 1
 pos   0,  0:picload "include/Button_Prv_Positive.png",1
 pos  48,  0:picload "include/Button_Prv_Negative.png",1
 pos  96,  0:picload "include/Button_Adv_Positive.png",1
 pos 144,  0:picload "include/Button_Adv_Negative.png",1
 pos 192,  0:picload "include/Config.png",1
-pos 232,  0:picload "include/Exit.png",1
+pos 232,  0:picload "include/Edit.png",1
 pos 192, 40:picload "include/Icon_Script.png",1
 pos 192,120:picload "include/Icon_Internet.png",1
+pos 192,280:picload "include/Exit.png",1
 
 tmp=count
 repeat
@@ -15,7 +16,11 @@ repeat
 	if tmp<=0{screenMax=cnt+1:break}
 loop
 
-screen 2,400,(screenMax)*320,0:title "Buffer2"
+buffer 2,400,(screenMax)*320,0
 color 255,255,255:boxf
 
+screen 3,640,480,2,(ginfo(20)-640)/2,(ginfo(21)-480)/2
+GetWindowLong hwnd, -16
+SetWindowLong hwnd, -16, stat - $80000
+objimage -1
 gsel 0

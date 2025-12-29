@@ -71,7 +71,27 @@ sel=""+str((NowPageCnt))+"-4-5":gosub *ClickEventExecute:return
 	if length(InfoType)-1<a{
 		dialog "それは空です"
 	}else{
-		dialog "ID:"+str(a)+"対応するコマンド\n\nInfoType:"+InfoType(a)+"\nInfolabel:"+Infolabel(a)+"\nInfo1:"+Info1(a)+"\nInfo2:"+Info2(a),0,"エントリ 0～"+str(length(InfoType)-1)
+//		dialog "ID:"+str(a)+"対応するコマンド\n\nInfoType:"+InfoType(a)+"\nInfolabel:"+Infolabel(a)+"\nInfo1:"+Info1(a)+"\nInfo2:"+Info2(a),0,"エントリ 0～"+str(length(InfoType)-1)
+		switch InfoType(a)
+			case "url"
+				ShellExecuteDIR "open",Info2(a),Info1(a)
+				swbreak
+			case "app"
+				ShellExecuteDIR "open",Info1(a)+" "+Info2(a),""
+				swbreak
+			case "null"
+				dialog "そのエントリは登録されていないか、無効です。\n\n:"+Infolabel(a)
+				swbreak
+			case "file"
+				ShellExecuteDIR "edit",Info1(a),""
+				swbreak
+			case "script"
+				ShellExecuteDIR "open",Info2(a),Info1(a)
+				swbreak
+			default
+				dialog "深刻な不整合エラーです"
+				end
+		swend
 	}
 	sel=""
 return

@@ -1,0 +1,7 @@
+; This is the setting file of "Void Executer"
+[Config]
+Version=Beta1
+DPI=None
+Color=192,192,192
+Notify=Disable
+AutoUpdate=Disable

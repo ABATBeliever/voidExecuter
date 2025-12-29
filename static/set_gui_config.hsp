@@ -1,0 +1,197 @@
+#module
+	#deffunc ConfigGUI int p1
+		gsel 0,-1
+		gsel 3,2
+		redraw 0
+		clrobj
+		pos 0,0:picload "include/GUI_Config.png",1
+		font "",32
+		pos 20,20:mes ""+AppName@+" - 設定"
+		tmp="User:"+sysinfo(1)+"\nOS:"+OSVersionDIR@()+"\nPATH:"+AppPath@
+		pos 453,8:objsize 178,56:mesbox tmp,,,0
+		switch p1
+			case 0
+				title ""+AppName@+" "+AppVer@+" - 設定 / 一般設定"
+				swbreak
+			case 1
+				title ""+AppName@+" "+AppVer@+" - 設定 / プライバシーと安全"
+				swbreak
+			case 2
+				title ""+AppName@+" "+AppVer@+" - 設定 / 機能最適化・リセット"
+				swbreak
+			case 3
+				title ""+AppName@+" "+AppVer@+" - 設定 / ログの管理"
+				swbreak
+			case 4
+				title ""+AppName@+" "+AppVer@+" - 設定 / このプログラムについて"
+				swbreak
+		swend
+		redraw 1
+		objsize 186,(370/5)//74
+		pos 7, 94 : button gosub "個人設定",*ConfigGUI_0@
+		pos 7,168 : button gosub "プライバシーと安全",*ConfigGUI_1@
+		pos 7,242 : button gosub "機能最適化・リセット",*ConfigGUI_2@
+		pos 7,316 : button gosub "ログの管理",*ConfigGUI_3@
+		pos 7,390 : button gosub "このプログラムについて",*ConfigGUI_4@
+		objenable (p1+1),0
+	return
+	#deffunc EditGUI
+		gsel 0,-1
+		gsel 3,2
+		title ""+AppName@+" - "+AppVer@+" - 設定を編集"
+	return
+#global
+*ConfigGUI_0
+	ConfigGUI 0
+return
+
+*ConfigGUI_1
+	ConfigGUI 1
+	tmp ="プライバシーと安全\n\n"
+	tmp+="プライバシーと安全に関する設定を行えます。\n\n"
+	tmp+="・簡易暗号化\nOSバージョン、ユーザ名、絶対パスを用いた暗号化を行います。\n現在、この設定は"+"無効"+"です。"
+	pos 222, 94:objsize 408,330:mesbox tmp,,,0
+	pos 222,424:objsize 204,42:button gosub "簡易暗号化を有効にする",*ConfigGUI_1:objenable  7,1
+	pos 426,424:objsize 204,42:button gosub "簡易暗号化を無効にする",*ConfigGUI_1:objenable  8,0
+return
+
+*ConfigGUI_2
+	ConfigGUI 2
+	tmp ="機能最適化・リセット\n\n"
+	tmp+="・機能最適化\n機能最適化を行うことで、自動でOSがサポートする機能を有効にし、そうでないものを無効にできます。\n\n"
+	tmp+="・リセット\nリセットを行うと、設定やランチャーデータの既定値を復元できます。\n※設定変更は'一般設定、'ランチャーの編集はEditボタンから行えます。\n※voidExecuterのアンインストールをする場合は、単純にexeバイナリや生成物を削除するだけで構いません。"
+	pos 222, 94:objsize 408,330:mesbox tmp,,,0//408 3 136
+	pos 222,424:objsize 136,42:button gosub "機能最適化を実施"    ,*ConfigGUI_2_1:objenable  7,1
+	pos 358,424:objsize 136,42:button gosub "設定リセット"        ,*ConfigGUI_2_2:objenable  8,1
+	pos 494,424:objsize 136,42:button gosub "ランチャーのリセット",*ConfigGUI_2_3:objenable  9,1
+return
+*ConfigGUI_2_1
+	tmp=OSVersionDIR()
+	split tmp,"ver",tmp
+	if stat!=2 : tmp(1)="4.90"
+	switch tmp(1)
+		case "11.0"	//Win11
+			SuggestConfig(0)="Auto"   //DPI
+			SuggestConfig(1)="Enable" //通知
+			SuggestConfig(2)="Enable" //自動更新
+			SuggestConfig(3)="Windows 11"
+			swbreak
+		case "10.0"	//Win10
+			SuggestConfig(0)="Auto"
+			SuggestConfig(1)="Enable"
+			SuggestConfig(2)="Enable"
+			SuggestConfig(3)="Windows 10"
+			swbreak
+		case "6.2"	//Win8-8.1
+			SuggestConfig(0)="Legacy"
+			SuggestConfig(1)="Enable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="Windows 8 8.1"
+			swbreak
+		case "6.1"	//Win7
+			SuggestConfig(0)="Legacy"
+			SuggestConfig(1)="Disable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="Windows 7"
+			swbreak
+		case "6.0"	//Vista
+			SuggestConfig(0)="Legacy"
+			SuggestConfig(1)="Disable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="Windows Vista"
+			swbreak
+		case "5.2"
+			SuggestConfig(0)="None"
+			SuggestConfig(1)="Disable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="ReactOS / Windows XP x64"
+			swbreak
+		case "5.1"
+			SuggestConfig(0)="None"
+			SuggestConfig(1)="Disable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="Windows XP x86"
+			swbreak
+		default
+			SuggestConfig(0)="None"
+			SuggestConfig(1)="Disable"
+			SuggestConfig(2)="Disable"
+			SuggestConfig(3)="Legacy Windows [ID:"+tmp(1)+"]"
+			swbreak
+	swend
+	tmp ="自動推奨設定は以下の通りです。\n\n"
+	tmp+="判定されたOS	:"+SuggestConfig(3)+"\n"
+	tmp+="DPIモード		:"+SuggestConfig(0)+"\n"
+	tmp+="通知機能		:"+SuggestConfig(1)+"\n"
+	tmp+="自動更新		:"+SuggestConfig(2)+"\n"
+	tmp+="\n\nこれを反映するには'はい(Y)'を、却下するには'いいえ(N)'を押してください。\n※却下した場合、変更は行われません。初回起動の場合は、すべて無効になります。"
+	dialog tmp,2,AppName+" - 機能最適化"
+	dialog "未実装"
+return
+*ConfigGUI_2_2
+	dialog "本当に設定をリセットしますか?",3,AppName+" - 確認"
+	if stat=7 : return
+	Writelog "Config Reset"
+	GenerateConfig
+	dialog "設定が初期化されました。再起動します。",0,AppName+" - 情報"
+	end
+return
+*ConfigGUI_2_3
+	dialog "本当にランチャーをリセットしますか?",3,AppName+" - 確認"
+	if stat=7 : return
+	Writelog "List Reset"
+	bcopy "include/default.json","list.json"
+	dialog "ランチャーデータが初期化されました。再起動します。",0,AppName+" - 情報"
+	end
+return	
+
+*ConfigGUI_3
+	ConfigGUI 3
+	tmp="現時点のログ\n\n"+LogData()
+	pos 222, 94:objsize 408,330:mesbox tmp,,,0
+	pos 222,424:objsize 204,42:button gosub "ログをクリア",*ConfigGUI_3_1
+	pos 426,424:objsize 204,42:button gosub "保存",*ConfigGUI_3_2
+return
+*ConfigGUI_3_1
+	Disable_WriteLog
+	gosub *ConfigGUI_3
+return
+*ConfigGUI_3_2
+	WriteLog "Write Out *"+AppPath+"\\data.log"
+	tmp=LogData()
+	notesel tmp
+	notesave "data.log"
+	noteunsel
+	dialog "ログ書き出しに成功しました",0,AppName+" - 通知"
+return
+
+*ConfigGUI_4
+	ConfigGUI 4
+	tmp =AppName+" "+Appver+" [ID:"+Verint+"]\n"
+	tmp+="Copyright (c) 2025 ABATBeliever.\n"
+	tmp+="Compiled with HSP 3.7 RC3 ["+hspver+"]\n\n"
+	tmp+="https://abatbeliever.net/app/voidExecuter/\n"
+	tmp+="https://github.com/ABATBeliever/voidExecuter\n\n"
+	tmp+="このプログラムは、MPL-2 ライセンスの下で使用・改変できます。\n"
+	pos 222, 94:objsize 408,330:mesbox tmp,,,0
+	pos 222,424:objsize 102,42:button gosub "権利表示",*ConfigGUI_4
+	pos 324,424:objsize 102,42:button gosub "ライセンスを見る",*ConfigGUI_4_2
+	pos 426,424:objsize 102,42:button gosub "リリースノートを見る",*ConfigGUI_4_3
+	pos 528,424:objsize 102,42:button gosub "公式サイトに移動",*ConfigGUI_4_4:objenable 10,0
+return
+*ConfigGUI_4_2
+	tmp=""
+	notesel tmp
+	noteload "include/LICENSE"
+	objprm 6,tmp
+	noteunsel
+return
+*ConfigGUI_4_3
+	tmp=""
+	notesel tmp
+	noteload "include/ReleaseNote"
+	objprm 6,tmp
+	noteunsel
+return
+*ConfigGUI_4_4
+return

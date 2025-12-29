@@ -53,6 +53,11 @@ while(InfoPtr!=NULL)
 			jsongets Info1(count),"path",     InfoPtr
 			jsongets Info2(count),"console",  InfoPtr
 			swbreak
+		case "null"
+			InfoLabel(count)="定義された空白"
+			Info1(count)    ="Invalid"
+			Info2(count)    ="Invalid"
+			swbreak
 		default
 			InfoType(count) ="Invalid"
 			InfoLabel(count)="破損"
@@ -66,6 +71,16 @@ wend
 
 repeat count
 	if InfoType(cnt)="Invalid" or InfoType(cnt)="" : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:typeデータの破損"
+	if InfoType(cnt)="app"     or InfoType(cnt)="file" {
+		exist Info1(cnt)
+		if strsize=-1 {
+			dialog "アプリまたはファイルが見つかりませんでした。\nID:"+str(cnt)+"\nファイルパス:"+Info1(cnt),1,AppName+" - 警告"
+			InfoType(cnt) ="null"
+			InfoLabel(cnt)="見つからなかった事による空白"
+			Info1(cnt)    ="Invalid"
+			Info2(cnt)    ="Invalid"
+		}
+	}
 	if Infolabel(cnt)=""  : Infolabel(cnt)="破損"  : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:laberの破損"
 	if Info1(cnt)=""                               : ListJsonBreak "Jsonのランチャーエントリが破損しています。\n破損したID: "+str(cnt)+"\n内容:第3データの破損"
 	//Info2は空白を許す

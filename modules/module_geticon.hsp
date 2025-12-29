@@ -12,11 +12,17 @@ Powered by hoyoqwerty
 		tmp=p1
 		strrep tmp,"/","\\"
 		dim shfileinfo,88
-		shgetfileinfo tmp,0,varptr(shfileinfo),$160,$100
 		gsel int(p2)
 		redraw 0
-		drawiconex hdc,p4,p5,shfileinfo(0),int(p3),int(p3),0,0,3
-		destroyicon shfileinfo(0)
+		exist tmp
+		if strsize=-1 {
+			pos int(p4),int(p5)
+			gcopy 1,192,200,80,80
+		}else{
+			shgetfileinfo tmp,0,varptr(shfileinfo),$160,$100
+			drawiconex hdc,p4,p5,shfileinfo(0),int(p3),int(p3),0,0,3
+			destroyicon shfileinfo(0)
+		}
 		redraw 1
 	return
 #global

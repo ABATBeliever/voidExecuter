@@ -2,20 +2,21 @@ dim IsDPI,6
 dim Press0,16
 dim Press1,16
 dim Press2,16
-dim DebugDIR,16
 dim count
 dim a
 dim IsWindowSee : IsWindowSee=0
+dim IsConfigSee : IsConfigSee=0
 dim NowPageCnt
 
 NowPageCnt=0
 sdim tmp
 sdim tmp2
-sdim sel         : sel=""
+sdim sel : sel=""
 InfoType =""
 InfoLabel=""
 Info1    =""
 Info2    =""
+sdim SuggestConfig
 
 sdim AppPath,1024
 GetModuleFileName hModule,varptr(AppPath), 256

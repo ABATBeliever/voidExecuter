@@ -1,0 +1,15 @@
+#deffunc ShellExecuteDIR str sp1, str sp2, str sp3
+	sp2_1=sp2:sp3_1=sp3
+	strrep sp2_1,"/","\\":strrep sp3_1,"/","\\"
+	WriteLog "ShellExecute "+sp1+" "+sp2_1+" "+sp3_1
+	ShellExecuteW 0, sp1, sp2_1, sp3, 0, 10
+	tmp=stat
+	if int(stat)<32 {
+		dialog "ŽÀs‚ÉŽ¸”sB\n\nShellExecuteW:"+tmp
+		WriteLog "ShellExecute Failed *"+tmp
+	}else{
+		gsel 0,-1
+		IsWindowSee=0
+		WriteLog "Deactivate(Execute)"
+	}
+return

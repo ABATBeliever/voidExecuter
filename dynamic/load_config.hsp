@@ -1,7 +1,15 @@
-if IsNotExist("config.dat") {
-	WriteLog "config not found"
-	bcopy "include/default.dat","config.dat"
-}
+#module
+	#deffunc GenerateConfig
+		WriteLog "config not found"
+		tmp="; This is the setting file of \"Void Executer\"\n[Config]\nVersion=Beta1\nDPI=None\nColor=192,192,192\nNotify=Disable\nAutoUpdate=Disable"
+		notesel tmp
+		notesave "config.dat"
+		noteunsel
+		tmp=""
+	return
+#global
+
+if IsNotExist("config.dat") {GenerateConfig}
 
 setini_file dir_cur+"/config.dat"
 
@@ -17,7 +25,7 @@ repeat
 		p7=1
 		DialogVistaEx p1,p2,p3,p4,p5,p6,p7
 		switch stat
-			case 101 : WriteLog "Reset Config" : bcopy "include/default.dat","config.dat" : swbreak
+			case 101 : WriteLog "Reset Config" : GenerateConfig : swbreak
 			default  : break
 		swend
 	}else{

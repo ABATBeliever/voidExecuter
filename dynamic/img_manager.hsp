@@ -1,10 +1,10 @@
 #module
 	#deffunc WriteButton int p1
 		gsel 0
-		clrobj 4
+		clrobj 5
 		
-		objsize 80, 40
-		pos 280,420:input tmp@:objenable 4,0:PanelGUI=objinfo(stat, 2)
+		objsize 160, 40
+		pos 240,420:input tmp@:objenable 5,0:PanelGUI=objinfo(stat, 2)
 		GetWindowLong PanelGUI, -16
 		SetWindowLong PanelGUI, -16, stat | $1
 		
@@ -36,7 +36,7 @@
 	return
 
 	#deffunc WriteImage int p1, int p2, int p3
-		if length(InfoType@)-1<int(NowPageCnt@*20+p1) : objimage 1,192,200,192,200 : return
+		if length(InfoType@)-1<int(NowPageCnt@*20+p1) : objimage 1,192,400,192,400 : return
 		switch InfoType@(NowPageCnt@*20+p1)
 			case "url"
 				objimage 1,192,120,192,120
